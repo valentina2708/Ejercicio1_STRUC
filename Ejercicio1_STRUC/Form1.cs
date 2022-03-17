@@ -13,6 +13,7 @@ namespace Ejercicio1_STRUC
 
     public struct Recetas
     {
+        public int id;
         public String nombre_receta;
         public int num_ingrediente;
         public String ingrediente;
@@ -22,9 +23,12 @@ namespace Ejercicio1_STRUC
     public partial class Form1 : Form
     {
         Recetas receta;
+        List<Recetas> recetario = new List<Recetas>();
         public Form1()
         {
             InitializeComponent();
+            receta.id = 0;
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -54,35 +58,36 @@ namespace Ejercicio1_STRUC
 
         private void btn_registrar_Click(object sender, EventArgs e)
         {
+            receta.id = receta.id + 1;
             receta.nombre_receta = text_nombre.Text;
             receta.num_ingrediente = Convert.ToInt32(text_numingredientes.Text);
             receta.ingrediente = text_ingredientes.Text;
             receta.tiempo = Convert.ToInt32(text_tiempo.Text);
             receta.preparacion = text_preparacion.Text;
             MessageBox.Show("Receta Registrada: " + receta.nombre_receta, "RECETAS");
-
+            recetario.Add(receta);
         }
 
         private void btn_consultar_Click(object sender, EventArgs e)
         {
-         
-
-            richText_recetas.AppendText("\nNombre Receta: " + receta.nombre_receta
-                + "\nN ingredientes: " +receta.num_ingrediente
-                + "\nIngredientes: " +receta.ingrediente
-                + "\ntiempo: " +receta.tiempo
-                + "\nPreparación: " +receta.preparacion
+            richText_recetas.Clear();
+            foreach (Recetas r in recetario)
+            {
+                richText_recetas.AppendText("\nNombre Receta: " + r.nombre_receta
+                + "\nN ingredientes:\t" + r.num_ingrediente
+                + "\nIngredientes:\t" + r.ingrediente
+                + "\ntiempo:\t" + r.tiempo
+                + "\nPreparación:\t" + r.preparacion + "\n"
                 );
-             
+            }
 
         }
 
         private void btn_eliminar_Click(object sender, EventArgs e)
         {
-           
-
-
-
+            int id = Convert.ToInt32(textBox1.Text);
+            recetario.RemoveAt(id);
+            MessageBox.Show("Receta Eliminada", "RECETAS");
         }
 
         private void btn_limpiar_Click(object sender, EventArgs e)
@@ -98,7 +103,26 @@ namespace Ejercicio1_STRUC
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
+            int id = Convert.ToInt32(textBox1.Text);
+            receta.id = id;
+            receta.nombre_receta = text_nombre.Text;
+            receta.num_ingrediente = Convert.ToInt32(text_numingredientes.Text);
+            receta.ingrediente = text_ingredientes.Text;
+            receta.tiempo = Convert.ToInt32(text_tiempo.Text);
+            receta.preparacion = text_preparacion.Text;
+            MessageBox.Show("Receta Actualizada: " + receta.nombre_receta, "RECETAS");
+            recetario[id] = receta; 
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(textBox1.Text);
+            receta = recetario[id];
+            text_nombre.Text = receta.nombre_receta;
+            text_numingredientes.Text = receta.num_ingrediente.ToString();
+            text_ingredientes.Text = receta.ingrediente;
+            text_tiempo.Text = receta.tiempo.ToString();
+            text_preparacion.Text = receta.preparacion;
         }
     }
 }
